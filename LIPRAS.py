@@ -337,10 +337,14 @@ class Ui_MainWindow(object):
         MainWindow.setWindowIcon(QtGui.QIcon('Python.png'))
         self.groupBox_2.setTitle(_translate("MainWindow", "Dataset", None))
         self.pushButton.setText(_translate("MainWindow", "Browse", None))
+        self.pushButton.clicked.connect(lambda: self.FileSelect())  # Action upon click
+
         self.radioButton.setText(_translate("MainWindow", "Reverse File Order", None))
         self.groupBox.setTitle(_translate("MainWindow", "Plotting", None))
         self.label.setText(_translate("MainWindow", "File # of #", None))
         self.pushButton_4.setText(_translate("MainWindow", "Next", None))
+        self.pushButton_4.clicked.connect(lambda: self.Next())  # Action upon click
+
         self.groupBox_9.setTitle(_translate("MainWindow", "Data Range", None))
         self.label_2.setText(_translate("MainWindow", "<html><head/><body><p>2θ (°)</p></body></html>", None))
         self.groupBox_11.setTitle(_translate("MainWindow", "Data Range", None))
@@ -351,9 +355,11 @@ class Ui_MainWindow(object):
         self.checkBox_10.setText(_translate("MainWindow", "Refine Bkg", None))
         self.checkBox_11.setText(_translate("MainWindow", "No Bounds", None))
         self.pushButton_14.setText(_translate("MainWindow", "Fit Data", None))
+        self.pushButton_14.clicked.connect(lambda: self.FitData())  # Action upon click
+
         self.groupBox_13.setTitle(_translate("MainWindow", "Wavelength", None))
         self.lineEdit_3.setText(_translate("MainWindow", "1.5406", None))
-        self.lineEdit_4.setText(_translate("MainWindow", "1.544", None))
+        self.lineEdit_4.setText(_translate("MainWindow", "1.5444", None))
         self.label_9.setText(_translate("MainWindow", "<html><head/><body><p>Cu-K&alpha;<sub>1</sub></p></body></html><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 "<ui version=\"4.0\">\n"
 " <widget name=\"__qt_fake_top_level\">\n"
@@ -386,9 +392,17 @@ class Ui_MainWindow(object):
         self.radioButton_3.setText(_translate("MainWindow", "Add", None))
         self.radioButton_4.setText(_translate("MainWindow", "Delete", None))
         self.pushButton_3.setText(_translate("MainWindow", "Update Plot", None))
+        self.pushButton_3.clicked.connect(lambda: self.UpdatePlot())  # Action upon click
+
         self.pushButton_2.setText(_translate("MainWindow", "Select Points", None))
+        self.pushButton_2.clicked.connect(lambda: self.SelectPoints())  # Action upon click
+
         self.pushButton_15.setText(_translate("MainWindow", "Select Peak(s)", None))
+        self.pushButton_15.clicked.connect(lambda: self.SelectPeaks())  # Action upon click
+
         self.pushButton_16.setText(_translate("MainWindow", "Update", None))
+        self.pushButton_16.clicked.connect(lambda: self.Update())  # Action upon click
+
         self.groupBox_14.setTitle(_translate("MainWindow", "Constraints", None))
         self.checkBox_12.setText(_translate("MainWindow", "N", None))
         self.checkBox_13.setText(_translate("MainWindow", "x", None))
@@ -402,10 +416,56 @@ class Ui_MainWindow(object):
         self.radioButton_6.setText(_translate("MainWindow", "Peak Fit", None))
         self.radioButton_7.setText(_translate("MainWindow", "Coefficient Trend", None))
         self.pushButton_9.setText(_translate("MainWindow", "Fit Statistics", None))
+        self.pushButton_9.clicked.connect(lambda: self.FitStatistics())  # Action upon click
+
         self.pushButton_10.setText(_translate("MainWindow", "All Fits", None))
+        self.pushButton_10.clicked.connect(lambda: self.AllFits())  # Action upon click
+
         self.pushButton_11.setText(_translate("MainWindow", "Bayesian", None))
+        self.pushButton_11.clicked.connect(lambda: self.Bayesian())  # Action upon click
+
         self.pushButton_12.setText(_translate("MainWindow", "Previous", None))
+        self.pushButton_12.clicked.connect(lambda: self.Previous())  # Action upon click
+
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "2. Results", None))
+
+
+
+    def FileSelect(self):
+        print('Browse')
+
+    def UpdatePlot(self):
+        print('UpdatePlot')
+
+    def SelectPoints(self):
+        print('SelectPoints')
+
+    def Update(self):
+        print('Update')
+
+    def SelectPeaks(self):
+        print('SelectPeaks')
+
+    def FitData(self):
+        print('FitData')
+
+    def Next(self):
+        print('Next')
+        self.tabWidget.setCurrentIndex(1)
+
+
+    def Previous(self):
+        print('Previous')
+        self.tabWidget.setCurrentIndex(0)
+
+    def FitStatistics(self):
+        print('FitStatistics')
+
+    def AllFits(self):
+        print('AllFits')
+
+    def Bayesian(self):
+        print('Bayesian')
 
 
 if __name__ == "__main__":
