@@ -12,5 +12,6 @@ finish.m
 *.txt
 *.asv
 *.Bayes
+*.xy
 
 +model/desktop.ini
