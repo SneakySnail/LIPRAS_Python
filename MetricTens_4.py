@@ -5,12 +5,6 @@
 # Created by: PyQt4 UI code generator 4.12
 #
 # WARNING! All changes made in this file will be lost!
-
-# MetricTens-Python (Version: 1.0)-Created by Giovanni Esteves
-# Department of Materials Science and Engineering
-# North Carolina State University, Nov. 29th, 2015
-# Email: gesteve@ncsu.edu
-
 from PySide import QtGui, QtCore
 import sys
 from matplotlib.figure import Figure
@@ -970,6 +964,9 @@ if __name__ == "__main__":
     standalone = app is None
     if standalone:
         app = QtGui.QApplication(sys.argv)
+        font = app.font()
+        font.setPointSize(8)
+        app.setFont(font)
     MetricTens = QtGui.QMainWindow()
     ui = Ui_MetricTens()
     mpl = MatplotlibWidget()
