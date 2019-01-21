@@ -1,0 +1,16 @@
+FitOutputs/**
+SampleData/Synchrotron/APS-11IDC/FitOutputs/**
+SampleData/Synchrotron/APS-11BM/FitOutputs/**
+Preferences/**
+Copies/**
+
+startup.m
+finish.m
+*.Fdata
+*.Fmodel
+*.mat
+*.txt
+*.asv
+*.Bayes
+
++model/desktop.ini
