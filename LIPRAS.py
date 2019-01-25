@@ -128,12 +128,14 @@ class Ui_MainWindow(object):
         self.gridLayout_5.addWidget(self.label_2, 0, 0, 1, 1)
         self.doubleSpinBox = QtGui.QDoubleSpinBox(self.groupBox_9)
         self.doubleSpinBox.setDecimals(4)
-        self.doubleSpinBox.setSingleStep(0.01)
+        self.doubleSpinBox.setSingleStep(0.05)
         self.doubleSpinBox.setObjectName(_fromUtf8("doubleSpinBox"))
+
+
         self.gridLayout_5.addWidget(self.doubleSpinBox, 0, 2, 1, 1)
         self.doubleSpinBox_2 = QtGui.QDoubleSpinBox(self.groupBox_9)
         self.doubleSpinBox_2.setDecimals(4)
-        self.doubleSpinBox_2.setSingleStep(0.01)
+        self.doubleSpinBox_2.setSingleStep(0.05)
         self.doubleSpinBox_2.setObjectName(_fromUtf8("doubleSpinBox_2"))
         self.gridLayout_5.addWidget(self.doubleSpinBox_2, 0, 1, 1, 1)
         self.gridLayout_9.addWidget(self.groupBox_9, 0, 0, 1, 1)
@@ -316,7 +318,7 @@ class Ui_MainWindow(object):
         self.gridLayout_2.addWidget(self.tabWidget, 1, 0, 4, 1)
         self.groupBox_2 = QtGui.QGroupBox(self.centralWidget)
         self.groupBox_2.setMinimumSize(QtCore.QSize(473, 61))
-        self.groupBox_2.setMaximumSize(QtCore.QSize(497, 70))
+        self.groupBox_2.setMaximumSize(QtCore.QSize(530, 70))
         self.groupBox_2.setObjectName(_fromUtf8("groupBox_2"))
         self.horizontalLayout_2 = QtGui.QHBoxLayout(self.groupBox_2)
         self.horizontalLayout_2.setContentsMargins(11,11,11,11)
@@ -419,7 +421,6 @@ class Ui_MainWindow(object):
         self.radioButton.setText(_translate("MainWindow", "Reverse File Order", None))
 
         self.pushButton.clicked.connect(lambda: self.FileSelect(self.scrollArea))  # Action upon click
-
         self.pushButton_2.clicked.connect(lambda: self.SelectPoints())  # Action upon click
         self.pushButton_3.clicked.connect(lambda: self.UpdatePlot())  # Action upon click
         self.pushButton_9.clicked.connect(lambda: self.FitStatistics())  # Action upon click
@@ -428,6 +429,11 @@ class Ui_MainWindow(object):
         self.pushButton_14.clicked.connect(lambda: self.FitData())  # Action upon click
         self.pushButton_15.clicked.connect(lambda: self.SelectPeaks())  # Action upon click
         self.pushButton_16.clicked.connect(lambda: self.Update())  # Action upon click
+
+        self.doubleSpinBox.valueChanged.connect((lambda: self.Max2T_CB(self)))
+        self.doubleSpinBox_2.valueChanged.connect((lambda: self.Min2T_CB(self)))
+        self.doubleSpinBox_2.setKeyboardTracking(False)  # Allows user to edit range without triggering callback immediatley
+        self.doubleSpinBox.setKeyboardTracking(False)  # Allows user to edit range without triggering callback immediatley
 
 
     def FileSelect(self,pon):
@@ -438,7 +444,7 @@ class Ui_MainWindow(object):
         if len(self.Files) == 0:
             print('No file selected')
             return
-        self.Fdir = os.path.split(str(self.Files[0]))[0]
+        self.Fdir = str(os.path.split(self.Files[0][0])[0])
 
         if self.Files[0] != []:
             self.FileList = self.Files[:]
@@ -467,22 +473,28 @@ class Ui_MainWindow(object):
             x, y = np.loadtxt(self.Files[0][i], skiprows=4, usecols=(0, 1), unpack=True);
             twotheta[i] = x;
             intensity[i] = y;
-            nint[i] = np.sqrt(intensity[i]);
-            if 'sqrt' in Mode:
-                ax.plot(x[:], nint[i], ':o')
-            else:
-                ax.plot(x[:], intensity[i], ':o')
+
         self.twotheta=twotheta
         self.intensity=intensity
-
-        self.graphicsView.figure.tight_layout()
-        self.graphicsView.canvas.draw()
 
         self.Min2T=np.min(x)
         self.Max2T=np.max(x)
         self.doubleSpinBox_2.setValue(self.Min2T)
         self.doubleSpinBox.setValue(self.Max2T)
+        self.doubleSpinBox_2.setMinimum(self.Min2T)
+        self.doubleSpinBox.setMaximum(self.Max2T)
 
+    def Min2T_CB(self,dat):
+        print(float(self.doubleSpinBox_2.value()))
+        self.Min2T = self.doubleSpinBox_2.value()
+
+        self.rePlot(self.twotheta,self.intensity)
+
+    def Max2T_CB(self,dat):
+        print(float(self.doubleSpinBox.value()))
+        self.Max2T = self.doubleSpinBox.value()
+
+        self.rePlot(self.twotheta,self.intensity)
 
 
     def UpdatePlot(self):
@@ -508,6 +520,23 @@ class Ui_MainWindow(object):
 
     def Bayesian(self):
         print('Bayesian')
+
+    def rePlot(self,x,y):
+        print('rePlot')
+
+        ax = self.graphicsView.figure.add_subplot(111)
+        ax.cla()
+
+        idx2 = (np.abs(x[0] - self.doubleSpinBox_2.value())).argmin()
+        idx1 = (np.abs(x[0] - self.doubleSpinBox.value())).argmin()
+
+
+        ax.plot(x[0][idx2:idx1], y[0][idx2:idx1], ':o')
+        ax.set_xlabel('2Theta')
+        ax.set_ylabel('Intensity (a.u.)')
+
+        self.graphicsView.canvas.draw()
+        self.graphicsView.figure.tight_layout()
 
 
 class MatplotlibWidget(QtGui.QWidget, Ui_MainWindow):
